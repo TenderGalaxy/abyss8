@@ -55,8 +55,8 @@ function resetDisplay(){
 }
 
 function DXYN(x,y,n){
-    let x = regs[x] & 63
-    let y = regs[y] & 31
+    x = regs[x] & 63
+    y = regs[y] & 31
     regs[0xF] = 0
     for(let h = 0; h < 16; h++){
         let data = ram[I + h].toString(2)
