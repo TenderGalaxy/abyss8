@@ -164,7 +164,7 @@ function swc8(X,Y,N,NN,NNN){
 		case 5:
 			temp = regs[X] - regs[Y]
 			if(temp < 0){
-				tmp += 256
+				temp += 256
 				regs[15] = 0
 			} else {
 				regs[15] = 1
