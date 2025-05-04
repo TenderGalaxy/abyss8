@@ -182,18 +182,20 @@ function swc8(X,Y,N,NN,NNN){
 			break
 		case 6:
 			if(quirks['shift']){
-				regs[X = regs[Y]
+				regs[X] = regs[Y]
 			}
 			tmp = regs[X] & 0x000F
 			regs[X] >> 1
 			regs[15] = tmp
+			break
 		case 14:
 			if(quirks['shift']){
-				regs[X = regs[Y]
+				regs[X] = regs[Y]
 			}
 			tmp = regs[X] & 0xF000
 			regs[X] << 1
 			regs[15] = tmp
+			break
 	}
 }
 
