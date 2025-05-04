@@ -135,6 +135,36 @@ function DXYN(x,y,n){
         y++
     }
 }
+function swc8(X,Y,N,NN,NNN){
+	switch(N){
+		case 0:
+			regs[X] = regs[Y]
+			break
+		case 1:
+			regs[X] |= regs[Y]
+			break
+		case 2:
+			regs[X] &= regs[Y]
+			break
+		case 3:
+			regs[X] ^= regs[Y]
+			break
+		case 4:
+			regs[X] += regs[Y]
+			regs[15] = regs[X] >> 8
+			regs[X] %= 255
+			break
+		case 5:
+			regs[X] = regs[X] - regs[Y]
+			if(regs[X] < 0){
+				regs[X] += 255
+				regs[15] = 0
+			} else {
+				regs[15] = 1
+			}
+			break
+	}
+}
 
 function interpret(n){
     console.log(n.toString(16))
@@ -189,6 +219,9 @@ function interpret(n){
         case 7:
             regs[X] = (regs[X] + NN) & 255
             break
+		case 8:
+			swc8(X,Y,N,NN,NNN)
+			break
 		case 9:
 			if(regs[X] != regs[Y]){
 				PC += 2
