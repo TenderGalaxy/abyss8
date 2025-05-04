@@ -68,7 +68,8 @@ const rom = [
 	0x80, 0x00, 0xA0, 0xA0, 0x40, 0xA0, 0x40, 0xA0, 0xA0, 0x0A, 0xAE, 0xA2,
 	0x42, 0x38, 0x08, 0x30, 0xB8
 ];
-
+quirks = {}
+quirks['shift'] = 0
 
 state = "OFF"
 function setMem(){
@@ -179,6 +180,20 @@ function swc8(X,Y,N,NN,NNN){
 				regs[15] = 1
 			}
 			break
+		case 6:
+			if(quirks['shift']){
+				regs[X = regs[Y]
+			}
+			tmp = regs[X] & 0x000F
+			regs[X] >> 1
+			regs[15] = tmp
+		case 14:
+			if(quirks['shift']){
+				regs[X = regs[Y]
+			}
+			tmp = regs[X] & 0xF000
+			regs[X] << 1
+			regs[15] = tmp
 	}
 }
 
@@ -209,7 +224,7 @@ function interpret(n){
 			}
             break
         case 1:
-			if(NNN == PC){
+			if(NNN == PC - 2){
 				state = "HALT"
 			}
             PC = NNN
