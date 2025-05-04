@@ -162,24 +162,22 @@ function swc8(X,Y,N,NN,NNN){
 			}
 			break
 		case 5:
-			temp = regs[X] - regs[Y]
-			if(temp < 0){
-				temp += 256
+			regs[X] -= regs[Y]
+			if(regs[X] < 0){
+				regs[X] += 256
 				regs[15] = 0
 			} else {
 				regs[15] = 1
 			}
-			regs[X] = temp
 			break
 		case 7:
-			temp = regs[Y] - regs[X]
-			if(temp < 0){
-				temp += 256
+			regs[X] = regs[Y] - regs[X]
+			if(regs[X] < 0){
+				regs[X] += 256
 				regs[15] = 0
 			} else {
 				regs[15] = 1
 			}
-			regs[X] = temp
 			break
 	}
 }
