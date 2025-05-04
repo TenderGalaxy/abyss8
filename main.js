@@ -151,8 +151,12 @@ function swc8(X,Y,N,NN,NNN){
 			break
 		case 4:
 			regs[X] += regs[Y]
-			regs[15] = regs[X] >> 8
-			regs[X] %= 255
+			if(regs[X] > 255){
+				regs[X] %= 255
+				regs[15] = 1
+			} else {
+				regs[15] = 0
+			}
 			break
 		case 5:
 			regs[X] = regs[X] - regs[Y]
