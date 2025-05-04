@@ -85,6 +85,7 @@ function setMem(){
     DT = 0
     ST = 0
     I = 0
+	stack = []
 }
 
 function insertRom(){
@@ -148,15 +149,25 @@ function interpret(n){
 
     switch( prefix ){
         case 0:
-            for(let i = 0; i < 32; i++){
-                for(let j = 0; j < 64; j++){
-                    dis[i][j] = 0
-                }
-            }
+			switch(N){
+				case 0:
+            		for(let i = 0; i < 32; i++){
+                		for(let j = 0; j < 64; j++){
+                    		dis[i][j] = 0
+                		}
+            		}
+					break
+				case 14:
+					PC = stack.shift()
+					break
+			}
             break
         case 1:
             PC = NNN
             break
+		case 2:
+			stack.push(PC)
+			PC = NNN
 		case 3:
 			if(regs[X] == NN){
 				PC += 2
@@ -176,7 +187,7 @@ function interpret(n){
             regs[X] = NN
             break
         case 7:
-            regs[X] += NN
+            regs[X] = (regs[X] + NN) & 255
             break
 		case 9:
 			if(regs[X] != regs[Y]){
