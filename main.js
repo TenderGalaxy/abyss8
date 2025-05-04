@@ -1,5 +1,6 @@
 
 
+
 const rom = [
 	// Offset 0x00000000 to 0x000002F8
 	0x12, 0x0A, 0x60, 0x01, 0x00, 0xEE, 0x60, 0x02, 0x12, 0xA6, 0x00, 0xE0,
@@ -126,10 +127,12 @@ function DXYN(x,y,n){
                 regs[0xF] = 1
             }
             dis[y][x+m] ^= +data[m]
-			if(dis[y][x+m] == 1){
-            	api.setBlock(x + m, 32 - y,0, ON)
-			} else {
-				api.setBlock(x + m, 32 - y,0, OFF)
+			if(x+m < 64 && x > 0 && y < 32){
+            	if(dis[y][x+m] == 1){
+					api.setBlock(x+m,32-y,0,ON)
+				} else {
+					api.setBlock(x+m,32-y,0,OFF)
+				}
 			}
         }
         y++
@@ -159,13 +162,24 @@ function swc8(X,Y,N,NN,NNN){
 			}
 			break
 		case 5:
-			regs[X] = regs[X] - regs[Y]
-			if(regs[X] < 0){
-				regs[X] += 255
+			let tmp = regs[X] - regs[Y]
+			if(tmp < 0){
+				tmp += 256
 				regs[15] = 0
 			} else {
 				regs[15] = 1
 			}
+			regs[X] = tmp
+			break
+		case 7:
+			let tmp = regs[Y] - regs[X]
+			if(tmp < 0){
+				tmp += 256
+				regs[15] = 0
+			} else {
+				regs[15] = 1
+			}
+			regs[X] = tmp
 			break
 	}
 }
@@ -197,6 +211,9 @@ function interpret(n){
 			}
             break
         case 1:
+			if(NNN == PC){
+				state = "HALT"
+			}
             PC = NNN
             break
 		case 2:
