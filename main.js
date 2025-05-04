@@ -184,7 +184,7 @@ function swc8(X,Y,N,NN,NNN){
 			if(quirks['shift']){
 				regs[X] = regs[Y]
 			}
-			tmp = regs[X] & 0x000F
+			tmp = regs[X] & 1
 			regs[X] >> 1
 			regs[15] = tmp
 			break
@@ -192,8 +192,9 @@ function swc8(X,Y,N,NN,NNN){
 			if(quirks['shift']){
 				regs[X] = regs[Y]
 			}
-			tmp = regs[X] & 0xF000
+			tmp = regs[X] & 0x8000
 			regs[X] << 1
+			regs[X] &= 255
 			regs[15] = tmp
 			break
 	}
