@@ -185,7 +185,7 @@ function swc8(X,Y,N,NN,NNN){
 				regs[X] = regs[Y]
 			}
 			tmp = regs[X] & 1
-			regs[X] >> 1
+			regs[X] >>= 1
 			regs[15] = tmp
 			break
 		case 14:
@@ -193,7 +193,7 @@ function swc8(X,Y,N,NN,NNN){
 				regs[X] = regs[Y]
 			}
 			tmp = regs[X] & 0x8000
-			regs[X] << 1
+			regs[X] <<= 1
 			regs[X] &= 255
 			regs[15] = tmp
 			break
