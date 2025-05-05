@@ -139,6 +139,40 @@ function DXYN(x,y,n){
         y++
     }
 }
+function swcF(X,Y,N,NN,NNN){
+	switch(NN){
+		case 0x07:
+			regs[X] = DT
+			break
+		case 0x15:
+			DT = regs[X]
+			break
+		case 0x18:
+			ST = regs[X]
+			break
+		case 0x1E:
+			I += regs[X]
+			if(I > 0xFFF){
+				regs[15] = 1
+			}
+			break
+		case 0x33:
+			ram[I] = Math.floor(regs[X] / 100)
+			ram[I+1] = Math.floor(regs[X] / 10) % 10
+			ram[I+2] = regs[X] % 10
+			break
+		case 0x55:
+			for(let m = 0; m < x; m++){
+				ram[I + m] = regs[m]
+			}
+			break
+		case 0x65:
+			for(let m = 0; m < x; m++){
+				regs[m] = ram[I + m] 
+			}
+			break
+	}
+}
 function swc8(X,Y,N,NN,NNN){
 	switch(N){
 		case 0:
@@ -269,6 +303,9 @@ function interpret(n){
         case 13:
             DXYN(X,Y,N)
             break
+		case 15:
+			swcF(X,Y,N,NN,NNN)
+			break
             
     }
     
