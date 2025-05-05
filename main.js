@@ -162,12 +162,12 @@ function swcF(X,Y,N,NN,NNN){
 			ram[I+2] = regs[X] % 10
 			break
 		case 0x55:
-			for(let m = 0; m < x; m++){
+			for(let m = 0; m < X; m++){
 				ram[I + m] = regs[m]
 			}
 			break
 		case 0x65:
-			for(let m = 0; m < x; m++){
+			for(let m = 0; m < X; m++){
 				regs[m] = ram[I + m] 
 			}
 			break
@@ -300,6 +300,8 @@ function interpret(n){
         case 10:
             I = NNN
             break
+		case 12:
+			regs[X] =  Math.floor(Math.random() * 256) & NN
         case 13:
             DXYN(X,Y,N)
             break
