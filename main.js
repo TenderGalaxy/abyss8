@@ -69,7 +69,7 @@ const rom = [
 	0x42, 0x38, 0x08, 0x30, 0xB8
 ];
 quirks = {}
-quirks['shift'] = 0
+quirks['shift'] = 1
 
 state = "OFF"
 function setMem(){
