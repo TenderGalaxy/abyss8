@@ -270,15 +270,15 @@ function interpret(n){
 
     switch( prefix ){
         case 0x0:
-			switch(N){
-				case 0x0:
+			switch(NNN){
+				case 0x0E0:
             		for(let i = 0; i < 32; i++){
                 		for(let j = 0; j < 64; j++){
                     		dis[i][j] = 0
                 		}
             		}
 					break
-				case 0xE:
+				case 0x0EE:
 					PC = stack.shift()
 					break
 			}
@@ -359,7 +359,7 @@ function tick(){
             if(ST > 0){
                 ST--
             }
-            let j = 0xFF * ram[PC] + ram[PC + 1]
+            let j = 0x100 * ram[PC] + ram[PC + 1]
             PC += 2
             interpret(j)
             break
