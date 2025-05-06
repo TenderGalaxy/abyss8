@@ -198,46 +198,46 @@ function swcF(X,Y,N,NN,NNN){
 }
 function swc8(X,Y,N,NN,NNN){
 	switch(N){
-		case 0:
+		case 0x0:
 			regs[X] = regs[Y]
 			break
-		case 1:
+		case 0x1:
 			regs[X] |= regs[Y]
 			break
-		case 2:
+		case 0x2:
 			regs[X] &= regs[Y]
 			break
-		case 3:
+		case 0x3:
 			regs[X] ^= regs[Y]
 			break
-		case 4:
+		case 0x4:
 			regs[X] = regs[X] + regs[Y]
-			if(regs[X] > 255){
-				regs[X] &= 255
+			if(regs[X] > 0xFF){
+				regs[X] &= 0xFF
 				regs[15] = 1
 			} else {
 				regs[15] = 0
 			}
 			break
-		case 5:
+		case 0x5:
 			regs[X] -= regs[Y]
 			if(regs[X] < 0){
-				regs[X] += 256
+				regs[X] += 0x100
 				regs[15] = 0
 			} else {
 				regs[15] = 1
 			}
 			break
-		case 7:
+		case 0x7:
 			regs[X] = regs[Y] - regs[X]
 			if(regs[X] < 0){
-				regs[X] += 256
+				regs[X] += 0x100
 				regs[15] = 0
 			} else {
 				regs[15] = 1
 			}
 			break
-		case 6:
+		case 0x6:
 			if(quirks['shift']){
 				regs[X] = regs[Y]
 			}
@@ -245,14 +245,14 @@ function swc8(X,Y,N,NN,NNN){
 			regs[X] >>= 1
 			regs[15] = tmp
 			break
-		case 14:
+		case 0xE:
 			if(quirks['shift']){
 				regs[X] = regs[Y]
 			}
 			tmp = regs[X] & 0x8000
 			regs[X] <<= 1
-			regs[X] &= 255
-			regs[15] = tmp
+			regs[X] &= 0xFF
+			regs[0xF] = tmp
 			break
 	}
 }
@@ -269,66 +269,67 @@ function interpret(n){
     console.log(`${PC}, ${prefix}, ${X}, ${Y}, ${N}, ${NN}, ${NNN}`)
 
     switch( prefix ){
-        case 0:
+        case 0x0:
 			switch(N){
-				case 0:
+				case 0x0:
             		for(let i = 0; i < 32; i++){
                 		for(let j = 0; j < 64; j++){
                     		dis[i][j] = 0
                 		}
             		}
 					break
-				case 14:
+				case 0xE:
 					PC = stack.shift()
 					break
 			}
             break
-        case 1:
+        case 0x1:
 			if(NNN == PC - 2){
 				state = "HALT"
 			}
             PC = NNN
             break
-		case 2:
+		case 0x2:
 			stack.push(PC)
 			PC = NNN
-		case 3:
+		case 0x3:
 			if(regs[X] == NN){
 				PC += 2
 			}
 			break
-		case 4:
+		case 0x4:
 			if(regs[X] != NN){
 				PC += 2
 			}
 			break
-		case 5:
+		case 0x5:
 			if(regs[X] == regs[Y]){
 				PC += 2
 			}
 			break
-        case 6:
+        case 0x6:
             regs[X] = NN
             break
-        case 7:
-            regs[X] = (regs[X] + NN) & 255
+        case 0x7:
+            regs[X] = (regs[X] + NN) & 0xFF
             break
-		case 8:
+		case 0x8:
 			swc8(X,Y,N,NN,NNN)
 			break
-		case 9:
+		case 0x9:
 			if(regs[X] != regs[Y]){
 				PC += 2
 			}
-        case 10:
+			break
+        case 0xA:
             I = NNN
             break
-		case 12:
-			regs[X] =  Math.floor(Math.random() * 256) & NN
-        case 13:
+		case 0xC:
+			regs[X] =  Math.floor(Math.random() * 0xFF) & NN
+        case 0xD:
             DXYN(X,Y,N)
             break
-		case 15:
+		case 0xF:
 			swcF(X,Y,N,NN,NNN)
 			break
             
@@ -358,7 +359,7 @@ function tick(){
             if(ST > 0){
                 ST--
             }
-            let j = 256 * ram[PC] + ram[PC + 1]
+            let j = 0xFF * ram[PC] + ram[PC + 1]
             PC += 2
             interpret(j)
             break
