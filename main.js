@@ -338,7 +338,7 @@ function interpret(n){
 }
 
 
-function tick(){
+function tick1(){
     switch (state){
         case "OFF":
             setMem()
@@ -364,6 +364,12 @@ function tick(){
             interpret(j)
             break
     }
+}
+
+function tick(){
+	for(let i = 0; i < 10; i++){
+		tick1()
+	}
 }
 
 
