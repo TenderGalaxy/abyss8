@@ -249,7 +249,7 @@ function swc8(X,Y,N,NN,NNN){
 			if(quirks['shift']){
 				regs[X] = regs[Y]
 			}
-			tmp = regs[X] & 0x8000
+			tmp = regs[X] & 0x80
 			regs[X] <<= 1
 			regs[X] &= 0xFF
 			regs[0xF] = tmp
